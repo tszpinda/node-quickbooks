@@ -2386,6 +2386,9 @@ module.request = function(context, verb, options, entity, callback) {
       console.log(JSON.stringify(body, null, 2));
     }
     if (callback) {
+      if (res && res.statusCode === 429 && res.headers) {
+        return callback({ response: { statusCode: 429, retryAfter: res.headers['retry-after'] || '60' }});
+      }
       if (err ||
           res.statusCode >= 300 ||
           (_.isObject(body) && body.Fault && body.Fault.Error && body.Fault.Error.length) ||
