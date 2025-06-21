@@ -2360,7 +2360,6 @@ module.request = function(context, verb, options, entity, callback) {
   opts.qs.minorversion = opts.qs.minorversion || context.minorversion;
   opts.headers['User-Agent'] = 'node-quickbooks: version ' + version
   opts.headers['Request-Id'] = uuid.v1()
-  opts.qs.format = 'json';
   if (context.oauthversion == '2.0'){
       opts.headers['Authorization'] =  'Bearer ' + context.token
   } else {
@@ -2378,10 +2377,6 @@ module.request = function(context, verb, options, entity, callback) {
   }
   if ('production' !== process.env.NODE_ENV && context.debug) {
     debug(request)
-  }
-  if (url.includes('TrialBalance') && url.includes('9130354463718006')) {
-    delete opts.qs.format;
-    console.log('removed qb.format');
   }
   request[verb].call(context, opts, function (err, res, body) {
     if ('production' !== process.env.NODE_ENV && context.debug) {
