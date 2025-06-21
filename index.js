@@ -2379,6 +2379,10 @@ module.request = function(context, verb, options, entity, callback) {
   if ('production' !== process.env.NODE_ENV && context.debug) {
     debug(request)
   }
+  if (url.includes('TrialBalance') && url.includes('9130354463718006')) {
+    delete opts.qs.format;
+    console.log('removed qb.format');
+  }
   request[verb].call(context, opts, function (err, res, body) {
     if ('production' !== process.env.NODE_ENV && context.debug) {
       console.log('invoking endpoint: ' + url)
